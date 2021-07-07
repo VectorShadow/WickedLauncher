@@ -14,7 +14,7 @@ import java.net.Socket;
 
 public class WLauncherEntityManager {
 
-    public static final String HOST_NAME = "vps-46c76bb0.vps.ovh.ca";
+    public static final String HOST_NAME = "167.114.97.153";
     public static final int HOST_PORT = 31592;
 
     public static final Dimension CANVAS_DIM = new Dimension(1600, 1000);
