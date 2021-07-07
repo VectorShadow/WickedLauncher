@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/uwm/DataVector/DataVector.iml" filepath="$USER_HOME$/uwm/DataVector/DataVector.iml" />
+      <module fileurl="file://$USER_HOME$/uwm/OmniGUI/OmniGUI.iml" filepath="$USER_HOME$/uwm/OmniGUI/OmniGUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WickedLauncher.iml" filepath="$PROJECT_DIR$/WickedLauncher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WickedLegacy/WickedLegacy.iml" filepath="$PROJECT_DIR$/../WickedLegacy/WickedLegacy.iml" />
+    </modules>
+  </component>
+</project>
