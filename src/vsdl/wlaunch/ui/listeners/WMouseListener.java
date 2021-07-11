@@ -1,7 +1,8 @@
 package vsdl.wlaunch.ui.listeners;
 
+import vsdl.omnigui.api.Gui;
 import vsdl.wlaunch.exec.WLauncherEntityManager;
-import vsdl.wlaunch.ui.in.InputMode;
+import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -9,8 +10,10 @@ import java.awt.event.MouseListener;
 
 public class WMouseListener implements MouseListener {
 
-    private InputMode getCurrentInputMode() {
-        return WLauncherEntityManager.getInputModeStack().peek();
+    private final Terminal TERM;
+
+    public WMouseListener(Terminal terminal) {
+        TERM = terminal;
     }
 
     @Override
@@ -18,16 +21,13 @@ public class WMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Point at = WLauncherEntityManager.getGui().getMouseEventLocationOnCanvas(e);
+        Point at = TERM.getGui().getMouseEventLocationOnCanvas(e);
         switch (e.getButton()) {
             case MouseEvent.BUTTON1:
-                getCurrentInputMode().mousePressedLeftAt(at);
-                break;
-            case MouseEvent.BUTTON2:
-                getCurrentInputMode().mousePressedMiddleAt(at);
+                TERM.getImageContextProfile().mouseClick(at, true);
                 break;
             case MouseEvent.BUTTON3:
-                getCurrentInputMode().mousePressedRightAt(at);
+                TERM.getImageContextProfile().mouseClick(at, false);
                 break;
             default: //nothing
         }

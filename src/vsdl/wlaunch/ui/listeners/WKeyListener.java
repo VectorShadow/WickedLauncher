@@ -1,11 +1,19 @@
 package vsdl.wlaunch.ui.listeners;
 
 import vsdl.wlaunch.exec.WLauncherEntityManager;
+import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class WKeyListener implements KeyListener {
+
+    private final Terminal TERM;
+
+    public WKeyListener(Terminal terminal) {
+        TERM = terminal;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -13,7 +21,7 @@ public class WKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        WLauncherEntityManager.getInputModeStack().peek().keyPressed(e);
+        TERM.getImageContextProfile().keyPress(e);
     }
 
     @Override
