@@ -1,11 +1,11 @@
 package vsdl.wlaunch.exec;
 
 import vsdl.datavector.elements.DataMessage;
-import vsdl.omnigui.image.InteractiveTextImageSource;
-import vsdl.omnigui.image.TextImager;
+import vsdl.omnigui.image.source.InteractiveTextImageSource;
 import vsdl.omnigui.image.context.ImageContext;
-import vsdl.omnigui.image.context.ImageContextProfile;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
+import vsdl.omnigui.image.source.SimpleMenuImageSource;
+import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,24 +17,48 @@ import static vsdl.wlaunch.exec.WLauncherEntityManager.*;
 public class WLauncherDriver {
 
     public static void main(String[] args) throws IOException {
-        getTerminal().setImageContextProfile(
-                ImageContextProfileBuilder.start().appendImageContext(
-                        new ImageContext(
-                                new InteractiveTextImageSource(
-                                        "Test text",
-                                        48,
-                                        new Dimension(400, 50),
-                                        Color.WHITE,
-                                        Color.BLACK,
-                                        () -> System.out.println("Text invoked!")
-                                ),
-                                new Point(25, 25)
-                        ),
-                        KeyEvent.VK_ENTER,
-                        0
-                ).build()
-        );
-        getTerminal().redraw();
+        try {
+            getDataLink().transmit(new DataMessage("{Hello world!}"));
+        } catch (ConnectException e) {
+            SimpleMenuImageSource connectionFailureMenu = new SimpleMenuImageSource(
+                    "Unable to contact game server!",
+                    new String[]{"Retry", "Enter host-name", "Exit"},
+                    new String[]{
+                            "Continue attempting to contact the server",
+                            "Manually enter a game server host-name",
+                            "Exit the game client"
+                    },
+                    new boolean[]{true, false, true},
+                    new Runnable[]{
+                            () -> {},
+                            () -> {},
+                            () -> System.exit(0)
+                    },
+                    () -> System.exit(0),
+                    36,
+                    Color.BLACK,
+                    Color.RED,
+                    Color.GREEN,
+                    Color.WHITE,
+                    Color.WHITE,
+                    Color.GRAY
+            );
+            getTerminal().setImageContextProfile(
+                    ImageContextProfileBuilder.start().appendImageContext(
+                            new ImageContext(
+                                    connectionFailureMenu,
+                                    connectionFailureMenu.getOrigin(Terminal.CANVAS_DIM)
+                            ),
+                            KeyEvent.VK_ENTER,
+                            KeyEvent.VK_UP,
+                            KeyEvent.VK_DOWN,
+                            KeyEvent.VK_NUMPAD8,
+                            KeyEvent.VK_NUMPAD2,
+                            KeyEvent.VK_ESCAPE
+                    ).build()
+            );
+            getTerminal().start();
+        }
 //        try {
 //            getDataLink().transmit(new DataMessage("{Hello world!}"));
 //        } catch (ConnectException e) {

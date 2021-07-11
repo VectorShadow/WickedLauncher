@@ -8,9 +8,10 @@ import vsdl.wlaunch.ui.listeners.WWindowListener;
 
 import java.awt.*;
 
-public class Terminal {
+public class Terminal extends Thread {
 
     public static final Dimension CANVAS_DIM = new Dimension(1600, 1000);
+    public static final int REDRAW_INTERVAL = 1000 / 60;
 
     private final Gui GUI;
     private ImageContextProfile ICP;
@@ -35,9 +36,21 @@ public class Terminal {
         ICP = imageContextProfile;
     }
 
-    public void redraw() {
+    private void redraw() {
         GUI.clearCanvas();
         ICP.paint(GUI);
         GUI.updateFrameImage();
+    }
+
+    @Override
+    public void run() {
+        do {
+            try {
+                Thread.sleep(REDRAW_INTERVAL);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            redraw();
+        } while(true);
     }
 }
