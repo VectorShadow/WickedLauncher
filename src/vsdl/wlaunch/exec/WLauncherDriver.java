@@ -1,7 +1,6 @@
 package vsdl.wlaunch.exec;
 
 import vsdl.datavector.elements.DataMessage;
-import vsdl.omnigui.image.source.InteractiveTextImageSource;
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
 import vsdl.omnigui.image.source.SimpleMenuImageSource;
@@ -10,16 +9,17 @@ import vsdl.wlaunch.ui.Terminal;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.ConnectException;
 
 import static vsdl.wlaunch.exec.WLauncherEntityManager.*;
 
 public class WLauncherDriver {
 
-    public static void main(String[] args) throws IOException {
+    private static void establishConnectionToRemoteHost() {
         try {
             getDataLink().transmit(new DataMessage("{Hello world!}"));
-        } catch (ConnectException e) {
+            System.out.println("Connected successfully!");
+            //todo - next step once connected!
+        } catch (IOException e) {
             SimpleMenuImageSource connectionFailureMenu = new SimpleMenuImageSource(
                     "Unable to contact game server!",
                     new String[]{"Retry", "Enter host-name", "Exit"},
@@ -30,8 +30,8 @@ public class WLauncherDriver {
                     },
                     new boolean[]{true, false, true},
                     new Runnable[]{
-                            () -> {},
-                            () -> {},
+                            WLauncherDriver::establishConnectionToRemoteHost,
+                            () -> {}, //todo - a prompt to update WLauncherEntityManager.HOST
                             () -> System.exit(0)
                     },
                     () -> System.exit(0),
@@ -57,8 +57,13 @@ public class WLauncherDriver {
                             KeyEvent.VK_ESCAPE
                     ).build()
             );
-            getTerminal().start();
         }
+    }
+
+    public static void main(String[] args) {
+        getTerminal().setImageContextProfile(ImageContextProfileBuilder.start().build());
+        getTerminal().start();
+        establishConnectionToRemoteHost();
 //        try {
 //            getDataLink().transmit(new DataMessage("{Hello world!}"));
 //        } catch (ConnectException e) {
