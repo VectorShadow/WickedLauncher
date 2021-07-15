@@ -1,5 +1,6 @@
 package vsdl.wlaunch.exec;
 
+import vsdl.datavector.crypto.RSA;
 import vsdl.datavector.elements.DataMessage;
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
@@ -16,7 +17,7 @@ public class WLauncherDriver {
 
     private static void establishConnectionToRemoteHost() {
         try {
-            getDataLink().transmit(new DataMessage("{Hello world!}"));
+            getDataLink().transmit(new DataMessage("{" + RSA.getSessionPublicKey() + "}"));
             System.out.println("Connected successfully!");
             //todo - next step once connected!
         } catch (IOException e) {
