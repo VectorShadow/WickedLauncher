@@ -17,7 +17,7 @@ public class WLauncherDriver {
 
     private static void establishConnectionToRemoteHost() {
         try {
-            getDataLink().transmit(new DataMessage("{" + RSA.getSessionPublicKey() + "}"));
+            getDataLink();
             System.out.println("Connected successfully!");
             //todo - next step once connected!
         } catch (IOException e) {
