@@ -22,14 +22,14 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
         String header = blocks.get(0);
         switch (header) {
             case PUBLIC_KEY:
-                System.out.println(WLauncherEntityManager.getSessionKey());
+                System.out.println(CryptoUtilities.toAlphaNumeric(WLauncherEntityManager.getSessionKey()));
                 dataLink.transmit(
                         DataMessageBuilder
                                 .start(SESSION_KEY)
                                 .addBlock(
                                         RSA.encrypt(
-                                                new BigInteger(WLauncherEntityManager.getSessionKey(), Character.MAX_RADIX),
-                                                new BigInteger(blocks.get(1), Character.MAX_RADIX)
+                                                WLauncherEntityManager.getSessionKey(),
+                                                CryptoUtilities.fromAlphaNumeric(blocks.get(1))
                                         ).toString(Character.MAX_RADIX)
                                 )
                                 .build()

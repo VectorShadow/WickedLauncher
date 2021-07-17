@@ -6,6 +6,7 @@ import vsdl.wlaunch.connections.WLauncherDataMessageHandler;
 import vsdl.wlaunch.ui.Terminal;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.Socket;
 
 public class WLauncherEntityManager {
@@ -15,7 +16,7 @@ public class WLauncherEntityManager {
 
     private static DataLink dataLink = null;
 
-    private static String sessionKey = null;
+    private static BigInteger sessionKey = null;
 
     private static Terminal term = null;
 
@@ -30,7 +31,7 @@ public class WLauncherEntityManager {
         return dataLink;
     }
 
-    public static String getSessionKey() {
+    public static BigInteger getSessionKey() {
         if (sessionKey == null) {
             sessionKey = CryptoUtilities.randomKey(128);
         }
