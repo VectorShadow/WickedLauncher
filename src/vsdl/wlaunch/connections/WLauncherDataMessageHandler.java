@@ -15,15 +15,16 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class WLauncherDataMessageHandler implements DataMessageHandler {
+
     @Override
-    public void handle(DataMessage dataMessage, DataLink dataLink) {
+    public void handle(DataMessage dataMessage, int id) {
         System.out.println("Received message: " + dataMessage.toString());
         ArrayList<String> blocks = dataMessage.toBlocks();
         String header = blocks.get(0);
         switch (header) {
             case PUBLIC_KEY:
                 System.out.println(CryptoUtilities.toAlphaNumeric(WLauncherEntityManager.getSessionKey()));
-                dataLink.transmit(
+                WLauncherEntityManager.getLinkSessionManager().sendMessageOnSession(
                         DataMessageBuilder
                                 .start(SESSION_KEY)
                                 .addBlock(
@@ -33,6 +34,7 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
                                         ).toString(Character.MAX_RADIX)
                                 )
                                 .build()
+                        , id
                 );
                 break;
             default:
@@ -40,12 +42,12 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
     }
 
     @Override
-    public void handleDataLinkError(Exception e, DataLink dataLink) {
+    public void handleDataLinkError(Exception e, int id) {
 
     }
 
     @Override
-    public void handleDataLinkClosure(DataLink dataLink) {
+    public void handleDataLinkClosure(int id) {
 
     }
 }

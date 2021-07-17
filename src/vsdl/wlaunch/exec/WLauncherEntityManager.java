@@ -2,6 +2,7 @@ package vsdl.wlaunch.exec;
 
 import vsdl.datavector.crypto.CryptoUtilities;
 import vsdl.datavector.link.DataLink;
+import vsdl.datavector.link.LinkSessionManager;
 import vsdl.wlaunch.connections.WLauncherDataMessageHandler;
 import vsdl.wlaunch.ui.Terminal;
 
@@ -14,21 +15,23 @@ public class WLauncherEntityManager {
     public static final String HOST_NAME = "167.114.97.153";
     public static final int HOST_PORT = 31592;
 
-    private static DataLink dataLink = null;
+    private static LinkSessionManager linkSessionManager = null;
 
     private static BigInteger sessionKey = null;
 
     private static Terminal term = null;
 
-    public static DataLink getDataLink() throws IOException {
-        if (dataLink == null) {
-            dataLink = new DataLink(
-                    new Socket(HOST_NAME, HOST_PORT),
-                    new WLauncherDataMessageHandler()
-            );
-            dataLink.start();
+    public static LinkSessionManager getLinkSessionManager() {
+        if (linkSessionManager == null) {
+            try {
+                Socket s = new Socket(HOST_NAME, HOST_PORT);
+                linkSessionManager = new LinkSessionManager(new WLauncherDataMessageHandler());
+                linkSessionManager.addSession(s);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to instantiate network session.");
+            }
         }
-        return dataLink;
+        return linkSessionManager;
     }
 
     public static BigInteger getSessionKey() {

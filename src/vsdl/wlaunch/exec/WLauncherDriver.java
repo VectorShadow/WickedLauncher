@@ -1,7 +1,5 @@
 package vsdl.wlaunch.exec;
 
-import vsdl.datavector.crypto.RSA;
-import vsdl.datavector.elements.DataMessage;
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
 import vsdl.omnigui.image.source.SimpleMenuImageSource;
@@ -17,10 +15,10 @@ public class WLauncherDriver {
 
     private static void establishConnectionToRemoteHost() {
         try {
-            getDataLink();
+            getLinkSessionManager();
             System.out.println("Connected successfully!");
             //todo - next step once connected!
-        } catch (IOException e) {
+        } catch (IllegalStateException e) {
             SimpleMenuImageSource connectionFailureMenu = new SimpleMenuImageSource(
                     "Unable to contact game server!",
                     new String[]{"Retry", "Enter host-name", "Exit"},
