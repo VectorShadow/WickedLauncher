@@ -2,7 +2,7 @@ package vsdl.wlaunch.exec;
 
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
-import vsdl.omnigui.image.source.SimpleMenuImageSource;
+import vsdl.omnigui.image.source.ScrollableMenuTextDialogImageSource;
 import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.*;
@@ -21,29 +21,40 @@ public class WLauncherDriver {
             System.out.println("Connected successfully!");
             //todo - next step once connected!
         } catch (IllegalStateException e) {
-            SimpleMenuImageSource connectionFailureMenu = new SimpleMenuImageSource(
-                    "Unable to contact game server!",
-                    new String[]{"Retry", "Enter host-name", "Exit"},
-                    new String[]{
+            ScrollableMenuTextDialogImageSource connectionFailureMenu =
+                    ScrollableMenuTextDialogImageSource.builder()
+                    .setColors(
+                            Color.BLACK,
+                            Color.RED,
+                            Color.LIGHT_GRAY,
+                            Color.WHITE,
+                            Color.DARK_GRAY,
+                            Color.BLACK,
+                            Color.BLACK,
+                            Color.BLACK
+                    )
+                    .setTextHeight(36)
+                    .setTitle("Unable to contact game server!")
+                    .setOptionCount(3)
+                    .setOptionNames(
+                            "Retry",
+                            "Enter alternate host name",
+                            "Exit")
+                    .setOptionDescriptions(
                             "Continue attempting to contact the server",
                             "Manually enter a game server host-name",
                             "Exit the game client"
-                    },
-                    new boolean[]{true, false, true},
-                    new Runnable[]{
+                    )
+                    .setOptionEnabledState(false, 1)
+                    .setOptionExecutions(
                             WLauncherDriver::establishConnectionToRemoteHost,
                             () -> {}, //todo - a prompt to update WLauncherEntityManager.HOST
                             () -> System.exit(0)
-                    },
-                    () -> System.exit(0),
-                    36,
-                    Color.BLACK,
-                    Color.RED,
-                    Color.GREEN,
-                    Color.WHITE,
-                    Color.WHITE,
-                    Color.GRAY
-            );
+                    )
+                    .setEscapeExecution(
+                            () -> System.exit(0)
+                    )
+                    .build();
             getTerminal().setImageContextProfile(
                     ImageContextProfileBuilder.start().appendImageContext(
                             new ImageContext(
