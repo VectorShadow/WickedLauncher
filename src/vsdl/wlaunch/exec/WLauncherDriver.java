@@ -3,12 +3,9 @@ package vsdl.wlaunch.exec;
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
 import vsdl.omnigui.image.source.FieldEntryTextDialogImageSource;
-import vsdl.omnigui.image.source.InteractiveTextDialogImageSource;
-import vsdl.omnigui.image.source.ScrollableMenuTextDialogImageSource;
 import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 import static vsdl.wlaunch.exec.WLauncherEntityManager.*;
 
@@ -25,16 +22,11 @@ public class WLauncherDriver {
         } catch (IllegalStateException e) {
             FieldEntryTextDialogImageSource userNameAndPasswordInputMenu =
                     FieldEntryTextDialogImageSource.builder()
-                    .setColors(
-                            Color.BLACK,
-                            Color.RED,
-                            Color.LIGHT_GRAY,
-                            Color.WHITE,
-                            Color.BLACK,
-                            Color.BLACK,
-                            Color.BLUE,
-                            Color.WHITE
-                    )
+                            .setBackgroundColor(Color.BLACK)
+                            .setTitleColor(Color.GREEN)
+                            .setEnabledColors(Color.LIGHT_GRAY, Color.BLACK)
+                            .setFieldColors(Color.BLACK, Color.WHITE)
+                            .setSelectedColors(Color.WHITE, Color.BLUE)
                     .setTextHeight(36)
                     .setTitle("Enter Username and Password:")
                             .setOptionCount(3)
@@ -46,9 +38,9 @@ public class WLauncherDriver {
                             .setInputFieldMaskState(true, 1)
                             .setInputFieldMaskState(true, 2)
                             .setInputFieldCharacterLimits(
-                                    8,
-                                    8,
-                                    8
+                                    16,
+                                    24,
+                                    24
                             )
                     .setEscapeExecution(() -> System.exit(0))
                     .build();
