@@ -1,7 +1,6 @@
 package vsdl.wlaunch.exec;
 
 import vsdl.datavector.crypto.CryptoUtilities;
-import vsdl.datavector.link.DataLink;
 import vsdl.datavector.link.LinkSessionManager;
 import vsdl.wlaunch.connections.WLauncherDataMessageHandler;
 import vsdl.wlaunch.ui.Terminal;
@@ -20,6 +19,7 @@ public class WLauncherEntityManager {
     private static BigInteger sessionKey = null;
 
     private static Terminal term = null;
+
 
     public static LinkSessionManager getLinkSessionManager() {
         if (linkSessionManager == null) {
