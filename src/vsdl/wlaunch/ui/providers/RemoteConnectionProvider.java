@@ -1,4 +1,4 @@
-package vsdl.wlaunch.connections;
+package vsdl.wlaunch.ui.providers;
 
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
@@ -58,8 +58,7 @@ public class RemoteConnectionProvider {
     public static void establishConnectionToRemoteHost() {
         try {
             getLinkSessionManager();
-            System.out.println("Connected successfully!");
-            //todo - next step once connected!
+            LoginProvider.loginPrompt(false);
         } catch (IllegalStateException e) {
             getTerminal().setImageContextProfile(
                     ImageContextProfileBuilder

@@ -1,6 +1,7 @@
 package vsdl.wlaunch.exec;
 
 import vsdl.datavector.crypto.CryptoUtilities;
+import vsdl.datavector.link.LinkSession;
 import vsdl.datavector.link.LinkSessionManager;
 import vsdl.wlaunch.connections.WLauncherDataMessageHandler;
 import vsdl.wlaunch.ui.Terminal;
@@ -13,6 +14,8 @@ public class WLauncherEntityManager {
 
     public static final String HOST_NAME = "167.114.97.153";
     public static final int HOST_PORT = 31592;
+
+    public static final int SESSION_ID = 1;
 
     private static LinkSessionManager linkSessionManager = null;
 
@@ -34,9 +37,17 @@ public class WLauncherEntityManager {
         return linkSessionManager;
     }
 
+    public static LinkSession getLinkSession() {
+        if (linkSessionManager == null) {
+            getLinkSessionManager();
+        }
+        return linkSessionManager.getSessionByID(SESSION_ID);
+    }
+
     public static BigInteger getSessionKey() {
         if (sessionKey == null) {
             sessionKey = CryptoUtilities.randomKey(128);
+            getLinkSession().setSessionSecret(sessionKey);
         }
         return sessionKey;
     }

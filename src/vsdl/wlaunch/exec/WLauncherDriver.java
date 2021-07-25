@@ -1,8 +1,7 @@
 package vsdl.wlaunch.exec;
 
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
-import vsdl.wlaunch.connections.LoginProvider;
-import vsdl.wlaunch.connections.RemoteConnectionProvider;
+import vsdl.wlaunch.ui.providers.RemoteConnectionProvider;
 
 import static vsdl.wlaunch.exec.WLauncherEntityManager.*;
 
