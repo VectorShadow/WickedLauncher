@@ -1,10 +1,12 @@
 package vsdl.wlaunch.ui.providers;
 
+import vsdl.datavector.crypto.CryptoUtilities;
 import vsdl.datavector.elements.DataMessageBuilder;
 import vsdl.omnigui.image.context.ImageContext;
 import vsdl.omnigui.image.context.ImageContextProfile;
 import vsdl.omnigui.image.context.ImageContextProfileBuilder;
 import vsdl.omnigui.image.source.FieldEntryTextDialogImageSource;
+import vsdl.wl.elements.SecurityConstants;
 import vsdl.wlaunch.ui.Terminal;
 
 import java.awt.*;
@@ -71,14 +73,7 @@ public class LoginProvider {
             enableSubmission();
             return;
         }
-        if (requireConfirmation) {
-            if (!password.equals(confirm)) {
-                loginPrompt(true, "Password confirmation does not match!");
-                enableSubmission();
-                return;
-            }
-        }
-        getLinkSessionManager().sendMessageOnSession(
+        DataMessageBuilder dmb =
                 DataMessageBuilder
                         .start(
                                 requireConfirmation
@@ -86,9 +81,22 @@ public class LoginProvider {
                                         : LOGIN_ACCOUNT
                         )
                         .addBlock(username)
-                        .addEncryptedBlock(password, getLinkSession())
-                        .build(),
-                SESSION_ID
+                        .addEncryptedBlock(
+                                password,
+                                getLinkSession()
+                        );
+        if (requireConfirmation) {
+            if (!password.equals(confirm)) {
+                loginPrompt(true, "Password confirmation does not match!");
+                enableSubmission();
+                return;
+            }
+            dmb.addBlock(CryptoUtilities.randomAlphaNumericString(SecurityConstants.SALT_LENGTH));
+        }
+        getLinkSessionManager()
+                .sendMessageOnSession(
+                        dmb.build(),
+                        SESSION_ID
         );
     }
 

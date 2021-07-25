@@ -10,7 +10,6 @@ public class WLauncherDriver {
     public static void main(String[] args) {
         getTerminal().setImageContextProfile(ImageContextProfileBuilder.start().build());
         getTerminal().start();
-        //LoginProvider.loginPrompt(true, "Password confirmation does not match!");
         RemoteConnectionProvider.establishConnectionToRemoteHost();
     }
 }

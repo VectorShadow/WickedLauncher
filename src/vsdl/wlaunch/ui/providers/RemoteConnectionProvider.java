@@ -58,7 +58,7 @@ public class RemoteConnectionProvider {
     public static void establishConnectionToRemoteHost() {
         try {
             getLinkSessionManager();
-            LoginProvider.loginPrompt(false);
+            LoginProvider.loginPrompt(true);
         } catch (IllegalStateException e) {
             getTerminal().setImageContextProfile(
                     ImageContextProfileBuilder
