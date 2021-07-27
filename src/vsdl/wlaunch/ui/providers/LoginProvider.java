@@ -73,29 +73,26 @@ public class LoginProvider {
             enableSubmission();
             return;
         }
-        DataMessageBuilder dmb =
-                DataMessageBuilder
-                        .start(
-                                requireConfirmation
-                                        ? CREATE_ACCOUNT
-                                        : LOGIN_ACCOUNT
-                        )
-                        .addBlock(username)
-                        .addEncryptedBlock(
-                                password,
-                                getLinkSession()
-                        );
         if (requireConfirmation) {
             if (!password.equals(confirm)) {
                 loginPrompt(true, "Password confirmation does not match!");
                 enableSubmission();
                 return;
             }
-            dmb.addBlock(CryptoUtilities.randomAlphaNumericString(SecurityConstants.SALT_LENGTH));
         }
         getLinkSessionManager()
                 .sendMessageOnSession(
-                        dmb.build(),
+                        DataMessageBuilder
+                                .start(
+                                        requireConfirmation
+                                                ? CREATE_ACCOUNT
+                                                : LOGIN_ACCOUNT
+                                )
+                                .addBlock(username)
+                                .addEncryptedBlock(
+                                        password,
+                                        getLinkSession()
+                                ).build(),
                         SESSION_ID
         );
     }
