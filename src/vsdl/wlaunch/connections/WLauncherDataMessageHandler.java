@@ -2,16 +2,15 @@ package vsdl.wlaunch.connections;
 
 import vsdl.datavector.api.DataMessageHandler;
 import vsdl.datavector.crypto.CryptoUtilities;
-import vsdl.datavector.crypto.Encryption;
 import vsdl.datavector.crypto.RSA;
 import vsdl.datavector.elements.DataMessage;
 import vsdl.datavector.elements.DataMessageBuilder;
-import vsdl.datavector.link.DataLink;
 import vsdl.wlaunch.exec.WLauncherEntityManager;
+import vsdl.wlaunch.ui.providers.CreateUserProvider;
 
+import static vsdl.wl.elements.DataMessageErrors.*;
 import static vsdl.wl.elements.DataMessageHeaders.*;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class WLauncherDataMessageHandler implements DataMessageHandler {
@@ -37,7 +36,17 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
                         , id
                 );
                 break;
+            case LOGON_ERR:
+                switch (blocks.get(1)) {
+                    case LOGON_USER_DID_NOT_EXIST:
+                        CreateUserProvider.createPrompt(blocks.get(2));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unrecognized Logon Error type: " + blocks.get(1));
+                }
+                break;
             default:
+                throw new IllegalArgumentException("Unrecognized Message Type: " + header);
         }
     }
 
