@@ -7,6 +7,7 @@ import vsdl.datavector.elements.DataMessage;
 import vsdl.datavector.elements.DataMessageBuilder;
 import vsdl.wlaunch.exec.WLauncherEntityManager;
 import vsdl.wlaunch.ui.providers.CreateUserProvider;
+import vsdl.wlaunch.ui.providers.LogonUserProvider;
 
 import static vsdl.wl.elements.DataMessageErrors.*;
 import static vsdl.wl.elements.DataMessageHeaders.*;
@@ -40,6 +41,9 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
                 switch (blocks.get(1)) {
                     case LOGON_USER_DID_NOT_EXIST:
                         CreateUserProvider.createPrompt(blocks.get(2));
+                        break;
+                    case LOGON_INCORRECT_PASSWORD:
+                        LogonUserProvider.loginPrompt("Incorrect password");
                         break;
                     default:
                         throw new IllegalArgumentException("Unrecognized Logon Error type: " + blocks.get(1));
