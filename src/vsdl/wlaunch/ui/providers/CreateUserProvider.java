@@ -42,7 +42,7 @@ public class CreateUserProvider {
                     .prePopulateField(password1, 0)
                     .prePopulateField(password2, 1)
                     .setSubmitExecution(CreateUserProvider::submitCreateRequest)
-                    .setEscapeExecution(LogonUserProvider::loginPrompt);
+                    .setEscapeExecution(LogonUserProvider::logonPrompt);
 
     private static final int MIN_PASSWORD = 8;
 

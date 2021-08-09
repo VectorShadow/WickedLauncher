@@ -60,13 +60,13 @@ public class LogonUserProvider {
         username = fields[0];
         password = fields[1];
         if (username.length() < MIN_USERNAME) {
-            loginPrompt(
+            logonPrompt(
                     "Username must be at least " + MIN_USERNAME + " characters long.");
             enableSubmission();
             return;
         }
         if (password.length() < MIN_PASSWORD) {
-            loginPrompt(
+            logonPrompt(
                     "Password must be at least " + MIN_PASSWORD + " characters long.");
             enableSubmission();
             return;
@@ -74,14 +74,10 @@ public class LogonUserProvider {
         getLinkSessionManager()
                 .sendMessageOnSession(
                         DataMessageBuilder
-                                .start(
-                                        LOGON_USER
-                                )
+                                .start(LOGON_USER)
                                 .addBlock(username)
-                                .addEncryptedBlock(
-                                        password,
-                                        getLinkSession()
-                                ).build(),
+                                .addEncryptedBlock(password, getLinkSession())
+                                .build(),
                         SESSION_ID
         );
     }
@@ -106,12 +102,12 @@ public class LogonUserProvider {
                 .build();
     }
 
-    public static void loginPrompt() {
-        loginPrompt(null);
+    public static void logonPrompt() {
+        logonPrompt(null);
     }
 
 
-    public static void loginPrompt(String errorMessage) {
+    public static void logonPrompt(String errorMessage) {
         enableSubmission();
         getTerminal().setImageContextProfile(generateProfile(errorMessage));
     }

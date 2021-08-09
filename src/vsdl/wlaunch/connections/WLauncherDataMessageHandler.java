@@ -43,7 +43,7 @@ public class WLauncherDataMessageHandler implements DataMessageHandler {
                         CreateUserProvider.createPrompt(blocks.get(2));
                         break;
                     case LOGON_INCORRECT_PASSWORD:
-                        LogonUserProvider.loginPrompt("Incorrect password");
+                        LogonUserProvider.logonPrompt("Incorrect password");
                         break;
                     default:
                         throw new IllegalArgumentException("Unrecognized Logon Error type: " + blocks.get(1));
